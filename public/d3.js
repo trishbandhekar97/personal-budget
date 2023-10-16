@@ -34,8 +34,7 @@ svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var key = function (d) { return d.data.label; };
 
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+var color;
 
 function change(data) {
 
@@ -139,8 +138,11 @@ axios.get('/budget').then(function (res)
     //     dataSource.data.push(res.data.myBudget[i].budget);
     //     dataSource.labels.push(res.data.myBudget[i].title);
     // }
-    dataSource.data = res.data.myBudget.map(data => data.budget);
-    dataSource.labels = res.data.myBudget.map(data => data.title);
+    dataSource.data = res.data.map(data => data.budget);
+    dataSource.labels = res.data.map(data => data.title);
+    color = d3.scale.ordinal()
+    .range(res.data.map(data => data.color));
+
 
     function randomData() {
         return dataSource.labels.map(function (label, index) {
